@@ -15,7 +15,7 @@ export async function fetchTableData(tableName: string) {
   return response.json();
 }
 
-export async function executeQuery(sql: string, params: any[] = []) {
+export async function executeQuery(sql: string, params: unknown[] = []) {
   const response = await fetch(`${API_BASE}/query`, {
     method: 'POST',
     headers: {

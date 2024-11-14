@@ -3,10 +3,19 @@ import { Table, ChevronRight, Database, RefreshCw, AlertCircle } from 'lucide-re
 import { fetchTables, fetchTableData } from '../lib/api';
 import { ResultsTable } from './ResultsTable';
 
+interface TableInfo {
+  name: string;
+}
+
+interface TableData {
+  columns: string[];
+  rows: Record<string, unknown>[];
+}
+
 export function TableBrowser() {
-  const [tables, setTables] = React.useState<Array<{ name: string }>>([]);
+  const [tables, setTables] = React.useState<TableInfo[]>([]);
   const [selectedTable, setSelectedTable] = React.useState<string | null>(null);
-  const [tableData, setTableData] = React.useState<any>(null);
+  const [tableData, setTableData] = React.useState<TableData | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -16,8 +25,8 @@ export function TableBrowser() {
       setError(null);
       const result = await fetchTables();
       if (result.success) {
-        setTables(result.data.map((row: any) => ({
-          name: Object.values(row)[0] as string
+        setTables(result.data.map((row: Record<string, string>) => ({
+          name: Object.values(row)[0]
         })));
       } else {
         setError(result.error || 'Failed to load tables');

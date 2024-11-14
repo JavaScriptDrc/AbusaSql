@@ -1,11 +1,12 @@
 import React from 'react';
-import { Play, Save, History, X } from 'lucide-react';
+import { Play,Save, History, X } from 'lucide-react';
 import { executeQuery } from '../lib/api';
 import { ResultsTable } from './ResultsTable';
+import type { SQLResult } from '../lib/sqlParser';
 
 export function QueryEditor() {
   const [query, setQuery] = React.useState('');
-  const [results, setResults] = React.useState<any>(null);
+  const [results, setResults] = React.useState<SQLResult | null>(null);
   const [history, setHistory] = React.useState<string[]>([]);
   const [showHistory, setShowHistory] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -46,6 +47,13 @@ export function QueryEditor() {
     }
   };
 
+  const saveQuery = () => {
+    const savedQueries = JSON.parse(localStorage.getItem('savedQueries') || '[]');
+    if (!savedQueries.includes(query)) {
+      localStorage.setItem('savedQueries', JSON.stringify([...savedQueries, query]));
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-100">
       <div className="p-4 border-b border-gray-800">
@@ -57,6 +65,13 @@ export function QueryEditor() {
           >
             <Play className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Run
+          </button>
+          <button
+            onClick={saveQuery}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 rounded transition-colors"
+          >
+            <Save className="w-4 h-4" />
+            Save
           </button>
           <button 
             onClick={() => setShowHistory(!showHistory)}

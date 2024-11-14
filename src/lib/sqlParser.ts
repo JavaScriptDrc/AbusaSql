@@ -1,6 +1,6 @@
 export type SQLResult = {
   columns: string[];
-  rows: any[];
+  rows: Record<string, unknown>[];
   error?: string;
 };
 
@@ -33,7 +33,7 @@ export function parseSQL(sql: string): SQLResult {
 }
 
 function parseSelect(sql: string): SQLResult {
-  // Simple SELECT parser for demonstration
+  console.log('Parsing SELECT:', sql);
   return {
     columns: ['id', 'name', 'created_at'],
     rows: [
@@ -44,6 +44,7 @@ function parseSelect(sql: string): SQLResult {
 }
 
 function parseInsert(sql: string): SQLResult {
+  console.log('Parsing INSERT:', sql);
   return {
     columns: ['affected_rows'],
     rows: [{ affected_rows: 1 }]
@@ -51,6 +52,7 @@ function parseInsert(sql: string): SQLResult {
 }
 
 function parseUpdate(sql: string): SQLResult {
+  console.log('Parsing UPDATE:', sql);
   return {
     columns: ['affected_rows'],
     rows: [{ affected_rows: 1 }]
@@ -58,6 +60,7 @@ function parseUpdate(sql: string): SQLResult {
 }
 
 function parseDelete(sql: string): SQLResult {
+  console.log('Parsing DELETE:', sql);
   return {
     columns: ['affected_rows'],
     rows: [{ affected_rows: 1 }]

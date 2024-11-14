@@ -1,6 +1,10 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { SQLResult } from './sqlParser';
 
+interface TableData {
+  [key: string]: string | number | boolean | null | Date;
+}
+
 interface LocalDBSchema extends DBSchema {
   tables: {
     key: string;
@@ -12,7 +16,7 @@ interface LocalDBSchema extends DBSchema {
         nullable: boolean;
         primary: boolean;
       }>;
-      data: Array<Record<string, any>>;
+      data: Array<TableData>;
     };
   };
   queries: {
